@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+    xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        https://jakarta.ee/xml/ns/jakartaee
+        https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd
+    "
+    version="6.0"
+>
+
+    <!-- 配置欢迎页面 -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>default.html</welcome-file>
+    </welcome-file-list>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value> <!-- 你的配置文件路径 -->
+    </context-param>
+
+    <!-- 配置监听器 -->
+    <listener>
+        <listener-class>net.cyue.web.easyquery.provider.http.servlet.listener.ContextListener</listener-class>
+    </listener>
+
+    <!-- 配置Servlet -->
+    <servlet>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:applicationContext.xml</param-value>
+        </init-param>
+        <!-- 启动加载顺序，数值越小越先加载 -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- Servlet映射 -->
+    <servlet-mapping>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- 配置过滤器 -->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>net.cyue.web.easyquery.test.spring.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <!-- 过滤器映射 -->
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 配置会话参数 -->
+    <session-config>
+        <!-- 会话超时时间，单位为分钟 -->
+        <session-timeout>30</session-timeout>
+        <!-- 会话Cookie配置 -->
+        <cookie-config>
+            <name>JSESSIONID</name>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+        <!-- 会话跟踪模式 -->
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!-- 配置上下文参数 -->
+    <context-param>
+        <param-name>appName</param-name>
+        <param-value>easy-query-test-spring</param-value>
+    </context-param>
+    <context-param>
+        <param-name>version</param-name>
+        <param-value>2.0.0</param-value>
+    </context-param>
+
+    <!-- 配置安全约束 (Jakarta EE增强) -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Resources</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+<!--        <form-login-config>-->
+<!--            <form-login-page>/login.html</form-login-page>-->
+<!--            <form-error-page>/login-error.html</form-error-page>-->
+<!--        </form-login-config>-->
+    </login-config>
+
+    <security-role>
+        <role-name>ADMIN</role-name>
+    </security-role>
+
+</web-app>

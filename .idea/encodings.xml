@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$USER_HOME$/Desktop/src/main/java" charset="UTF-8" />
+    <file url="file://$USER_HOME$/Desktop/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-core/provider-db-jdbc/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-core/provider-db-jdbc/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-db-jdbc/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-db-jdbc/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-db-mybatis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-db-mybatis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-router-servlet/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-router-servlet/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-router-spring/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-router-spring/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-server-servlet/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-server-servlet/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-server-spring/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-provider-http-server-spring/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-spring-boot-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-query-spring-boot-starter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/provider-http-corea/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/provider-http-corea/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-spring-boot/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-spring-boot/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-spring/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-spring/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

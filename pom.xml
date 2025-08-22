@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.cyue.web.easyquery</groupId>
+    <artifactId>easy-query</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>EasyQuery</name>
+    <description>for easier http query</description>
+    <url>https://gitee.com/hongweifei/easy-query</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Weifei Hong</name>
+            <email>hongweifei@cyue.net</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://gitee.com/hongweifei/easy-query.git</connection>
+        <developerConnection>scm:git:ssh://gitee.com/hongweifei/easy-query.git</developerConnection>
+        <url>https://gitee.com/hongweifei/easy-query/tree/master</url>
+    </scm>
+
+    <modules>
+        <module>easy-query-core</module>
+        <module>easy-query-provider-http-core</module>
+        <module>easy-query-provider-db-jdbc</module>
+        <module>easy-query-provider-db-mybatis</module>
+        <module>easy-query-provider-http-router-servlet</module>
+        <module>easy-query-provider-http-server-servlet</module>
+        <module>easy-query-provider-http-router-spring</module>
+        <module>easy-query-provider-http-server-spring</module>
+        <module>easy-query-spring-boot-starter</module>
+        <module>test</module>
+        <module>test-spring</module>
+        <module>test-spring-boot</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <revision>0.1.2</revision>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.8.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <deploymentName>EasyQuery-${revision}</deploymentName>
+                    <excludeArtifacts>
+                        <excludeArtifact>test</excludeArtifact>
+                        <excludeArtifact>test-spring</excludeArtifact>
+                        <excludeArtifact>test-spring-boot</excludeArtifact>
+                    </excludeArtifacts>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
