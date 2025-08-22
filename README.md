@@ -10,6 +10,7 @@ for easier http query
 
 - `provider-db-jdbc`
 - `provider-db-mybatis`
+- `provider-db-mybatis-spring`
 - `provider-http-router-servlet`
 - `provider-http-router-spring`
 - `provider-http-server-servlet`
@@ -25,7 +26,7 @@ for easier http query
 <dependency>
     <groupId>net.cyue.web.easyquery</groupId>
     <artifactId>easy-query-spring-boot-starter</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 
@@ -46,21 +47,21 @@ public class Main {
 ```java
 @Bean
 public static EasyQueryApplication<ServletContext> easyQueryApplication(ServletContext context)
-        throws ConfigException, IOException
-    {
-        EasyQueryApplication<ServletContext> app = EasyQueryApplicationFactory.create(context);
-        app.runByProperties(ResourceUtil.getResourceAsStream("example.properties"));
-        app.getContext().registerQuery(
-            PathInfo
-                .builder()
-                .apiPath("/api/v1/userinfo")
-                .addQueryParameter("id")
-                .addQueryParameter("username")
-                .build(),
-        "select * from user where id = #{id} or username = #{username}"
-        );
-        return app;
-    }
+    throws ConfigException, IOException
+{
+    EasyQueryApplication<ServletContext> app = EasyQueryApplicationFactory.create(context);
+    app.runByProperties(ResourceUtil.getResourceAsStream("example.properties"));
+    app.getContext().registerQuery(
+        PathInfo
+            .builder()
+            .apiPath("/api/v1/userinfo")
+            .addQueryParameter("id")
+            .addQueryParameter("username")
+            .build(),
+    "select * from user where id = #{id} or username = #{username}"
+    );
+    return app;
+}
 ```
 
 
@@ -78,7 +79,7 @@ api.v1.user.list=select * from user
 api.v1.user.{username}=select * from user where username = #{username}
 ```
 
-配置文件使用`getResourceAsStream`进行加载，请将配置文件放在resource文件夹。
+配置文件使用`getResourceAsStream`进行加载，请将配置文件放在resources文件夹。
 
 
 
@@ -90,3 +91,42 @@ user=root
 password=123456
 ```
 
+
+
+在`Spring`项目中使用`provider-db-mybatis-spring`：
+
+```xml
+<bean
+    id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+>
+    <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://localhost:3306/jdbc_test?useUnicode=true&amp;characterEncoding=utf8"/>
+    <property name="username" value="root"/>
+    <property name="password" value="123456"/>
+</bean>
+
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
+</bean>
+```
+
+或使用`mybatis.properties`。
+
+
+
+在`Spring-Boot`项目中使用`provider-db-mybatis-spring`：
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/jdbc_test?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+```
+
+或使用`mybatis.properties`。

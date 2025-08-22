@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-provider-http-core</artifactId>
-
     <name>EasyQuery HTTP Provider Core</name>
     <description>EasyQuery HTTP Provider Core</description>
 

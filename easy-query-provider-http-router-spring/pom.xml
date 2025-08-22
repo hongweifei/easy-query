@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-provider-http-router-spring</artifactId>
-
     <name>EasyQuery HTTP-SpringRouter Provider</name>
     <description>EasyQuery SpringRouter Provider</description>
 

@@ -8,142 +8,163 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
 /**
  * 任务工具类
  */
 public class TaskUtil {
-    private static final String DEFAULT_TASK = "default";
-    private static final Logger LOGGER = LoggerFactory.getLogger(TaskUtil.class);
-
-    // 使用线程安全的集合
-    private static final Map<String, List<Consumer<Object>>> TASK_LIST_MAP = new ConcurrentHashMap<>();
 
     /**
-     * 添加任务到默认任务组
-     * @param task 任务
+     * 任务
+     * @param <T> 运行参数类型
      */
-    public static void addTask(Consumer<Object> task) {
-        addTask(DEFAULT_TASK, task);
+    @FunctionalInterface
+    public interface Task<T> {
+        void run(T t) throws Exception;
     }
+
+    /**
+     * 任务类型
+     * @param <T> 运行参数类型
+     */
+    public static class TaskType<T> {
+
+        protected final String name;
+
+        public TaskType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return this.getName();
+        }
+
+        public String getName() {
+            return "TaskType@" + this.name;
+        }
+        public String getName(String id) {
+            return id + "@" + this.name;
+        }
+        public String getName(Object obj) {
+            return obj + "@" + this.name;
+        }
+    }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskUtil.class);
+    /// 使用线程安全的集合
+    private static final Map<TaskType<?>, List<Task<Object>>> TASK_LIST_MAP = new ConcurrentHashMap<>();
 
     /**
      * 添加任务到指定任务组
-     * @param taskName 任务组名称
+     * @param <T> 参数类型
+     * @param taskType 任务组类型
      * @param task 任务
      */
-    public static void addTask(String taskName, Consumer<Object> task) {
-        if (taskName == null || task == null) {
-            LOGGER.warn("任务名称或任务不能为空");
+    public static <T> void addTask(TaskType<T> taskType, Task<T> task) {
+        if (taskType == null || task == null) {
+            LOGGER.warn("任务类型或任务不能为空");
             return;
         }
 
-        LOGGER.info("添加任务：{}", taskName);
+        LOGGER.info("添加任务：{}", taskType);
 
         // 使用 computeIfAbsent 确保线程安全
-        TASK_LIST_MAP.computeIfAbsent(taskName, k -> new CopyOnWriteArrayList<>()).add(task);
-    }
-
-    /**
-     * 执行默认任务组
-     */
-    public static void runTask() {
-        runTask(DEFAULT_TASK, null);
-    }
-
-    /**
-     * 执行指定任务组（无参数）
-     * @param taskName 任务组名称
-     */
-    public static void runTask(String taskName) {
-        runTask(taskName, null);
+        TASK_LIST_MAP.computeIfAbsent(taskType, k -> new CopyOnWriteArrayList<>()).add((Task<Object>) task);
     }
 
     /**
      * 执行指定任务组（带参数）- 每个任务只执行一次
-     * @param taskName 任务组名称
+     * @param taskType 任务组类型
      * @param arg 任务执行参数
+     * @return 任务是否执行成功
      */
-    public static void runTask(String taskName, Object arg) {
-        if (taskName == null) {
-            LOGGER.warn("任务名称不能为空");
-            return;
+    public static <T> boolean runTask(TaskType<T> taskType, T arg) {
+        if (taskType == null) {
+            LOGGER.warn("任务类型不能为空");
+            return false;
         }
 
-        LOGGER.info("执行任务：{}", taskName);
+        LOGGER.info("执行任务：{}", taskType);
 
         // 获取并移除任务列表，确保只有一个线程能获取到
-        List<Consumer<Object>> taskList = TASK_LIST_MAP.remove(taskName);
+        List<Task<Object>> taskList = TASK_LIST_MAP.remove(taskType);
         if (taskList == null || taskList.isEmpty()) {
-            LOGGER.info("任务组 {} 不存在或为空", taskName);
-            return;
+            LOGGER.info("任务组 {} 不存在或为空", taskType);
+            return false;
         }
 
         // 执行所有任务，每个任务只执行一次
-        for (Consumer<Object> task : taskList) {
+        for (Task<Object> task : taskList) {
             try {
-                task.accept(arg);
+                task.run(arg);
             } catch (Exception e) {
                 LOGGER.error("执行任务时发生异常", e);
+                return false;
             }
         }
+        return true;
     }
 
     /**
      * 逐个执行任务（每个任务只执行一次）
-     * @param taskName 任务名称
+     * @param taskType 任务类型
      * @param arg 任务执行参数
+     * @return 任务是否执行成功
      */
-    public static void runTaskOneByOne(String taskName, Object arg) {
-        if (taskName == null) {
-            LOGGER.warn("任务名称不能为空");
-            return;
+    public static <T> boolean runTaskOneByOne(TaskType<T> taskType, T arg) {
+        if (taskType == null) {
+            LOGGER.warn("任务类型不能为空");
+            return false;
         }
 
-        LOGGER.info("逐个执行任务：{}", taskName);
+        LOGGER.info("逐个执行任务：{}", taskType);
 
-        List<Consumer<Object>> taskList = TASK_LIST_MAP.get(taskName);
+        List<Task<Object>> taskList = TASK_LIST_MAP.get(taskType);
         if (taskList == null || taskList.isEmpty()) {
-            LOGGER.info("任务组 {} 不存在或为空", taskName);
-            return;
+            LOGGER.info("任务组 {} 不存在或为空", taskType);
+            return false;
         }
 
         // 逐个取出并执行任务，确保每个任务只执行一次
-        Iterator<Consumer<Object>> iterator = taskList.iterator();
+        Iterator<Task<Object>> iterator = taskList.iterator();
         while (iterator.hasNext()) {
-            Consumer<Object> task = iterator.next();
+            Task<Object> task = iterator.next();
             iterator.remove(); // 立即移除，确保只执行一次
             try {
-                task.accept(arg);
+                task.run(arg);
             } catch (Exception e) {
                 LOGGER.error("执行任务时发生异常", e);
+                return false;
             }
         }
 
         // 如果任务列表为空，移除整个任务组
         if (taskList.isEmpty()) {
-            TASK_LIST_MAP.remove(taskName);
+            TASK_LIST_MAP.remove(taskType);
         }
+
+        return true;
     }
+
 
     /**
      * 检查任务组是否存在
-     * @param taskName 任务组名称
+     * @param taskType 任务组类型
      * @return 任务组存在存在结果
      */
-    public static boolean hasTask(String taskName) {
-        List<Consumer<Object>> tasks = TASK_LIST_MAP.get(taskName);
+    public static boolean hasTask(TaskType<?> taskType) {
+        List<Task<Object>> tasks = TASK_LIST_MAP.get(taskType);
         return tasks != null && !tasks.isEmpty();
     }
 
     /**
      * 获取任务组中的任务数量
-     * @param taskName 任务组名称
+     * @param taskType 任务组类型
      * @return 任务数量
      */
-    public static int getTaskCount(String taskName) {
-        List<Consumer<Object>> tasks = TASK_LIST_MAP.get(taskName);
+    public static int getTaskCount(TaskType<?> taskType) {
+        List<Task<Object>> tasks = TASK_LIST_MAP.get(taskType);
         return tasks != null ? tasks.size() : 0;
     }
 
@@ -158,11 +179,11 @@ public class TaskUtil {
 
     /**
      * 清除指定任务组
-     * @param taskName 任务组名称
+     * @param taskType 任务组类型
      */
-    public static void clearTasks(String taskName) {
-        List<Consumer<Object>> removed = TASK_LIST_MAP.remove(taskName);
+    public static void clearTasks(TaskType<?> taskType) {
+        List<Task<Object>> removed = TASK_LIST_MAP.remove(taskType);
         int count = removed != null ? removed.size() : 0;
-        LOGGER.info("已清除任务组：{}，共清除 {} 个任务", taskName, count);
+        LOGGER.info("已清除任务组：{}，共清除 {} 个任务", taskType, count);
     }
 }

@@ -17,7 +17,7 @@ public class ServletHTTPResponse implements IHTTPResponse {
 
     private static final String MESSAGE_OUT_NULL = "writer 为空";
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
     private final HttpServletResponse response;
     private final PrintWriter out;
 

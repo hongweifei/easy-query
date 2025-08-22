@@ -12,13 +12,13 @@ import org.slf4j.LoggerFactory;
 
 public class ServletHTTPServer extends AbstractHTTPServer<ServletContext> {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     public ServletHTTPServer(ServletContext context) {
         super(context);
-        TaskUtil.addTask(HTTPProviderTaskType.INIT.getName(), (_arg) -> {
+        TaskUtil.addTask(HTTPProviderTaskType.INIT, (_context) -> {
             this.logger.info("初始化 HTTPServer@{}", this.getClass().getSimpleName());
-            TaskUtil.runTask(HTTPProviderTaskType.ADD_ROUTE.getName());
+            TaskUtil.runTask(HTTPProviderTaskType.ADD_ROUTE, this.context);
         });
     }
 

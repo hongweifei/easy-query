@@ -7,6 +7,7 @@ import net.cyue.web.easyquery.core.EasyQueryApplicationFactory;
 import net.cyue.web.easyquery.core.config.ConfigException;
 import net.cyue.web.easyquery.core.http.data.PathInfo;
 import net.cyue.web.easyquery.springboot.EnableEasyQueryApplication;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

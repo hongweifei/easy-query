@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-provider-http-server-servlet</artifactId>
-
     <name>EasyQuery HTTP-ServletServer Provider</name>
     <description>EasyQuery ServletServer Provider</description>
 

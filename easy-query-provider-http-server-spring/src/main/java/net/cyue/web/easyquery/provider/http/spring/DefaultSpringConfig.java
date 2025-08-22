@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = "net.cyue.web.easyquery")
 public class DefaultSpringConfig implements WebMvcConfigurer {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     // 配置视图解析器（如果需要JSP视图）
     @Bean

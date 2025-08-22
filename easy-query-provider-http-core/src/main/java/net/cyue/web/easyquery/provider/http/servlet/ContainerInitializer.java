@@ -12,13 +12,13 @@ import java.util.Set;
 
 public class ContainerInitializer implements ServletContainerInitializer  {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     @Override
     public void onStartup(Set<Class<?>> set, ServletContext servletContext) throws ServletException {
         this.logger.info("Servlet容器初始化...");
         servletContext.setRequestCharacterEncoding("UTF-8");
         servletContext.setResponseCharacterEncoding("UTF-8");
-        TaskUtil.runTask(HTTPProviderTaskType.INIT.getName());
+        TaskUtil.runTask(HTTPProviderTaskType.INIT, servletContext);
     }
 }

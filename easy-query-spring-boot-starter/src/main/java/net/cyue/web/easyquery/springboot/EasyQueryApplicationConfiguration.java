@@ -20,7 +20,7 @@ import java.util.Arrays;
 @ComponentScan(basePackages = "net.cyue.web.easyquery")
 public class EasyQueryApplicationConfiguration {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
     private EasyQueryApplication<ServletContext> app;
     private final String[] propertiesPathArray;
 

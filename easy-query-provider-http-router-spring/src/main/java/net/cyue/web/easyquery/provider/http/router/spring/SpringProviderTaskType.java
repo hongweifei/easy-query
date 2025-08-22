@@ -1,20 +1,12 @@
 package net.cyue.web.easyquery.provider.http.router.spring;
 
-public enum SpringProviderTaskType {
-    SET_CONTEXT("task-provider-spring-set-context"),
-    ;
-    private final String name;
-    SpringProviderTaskType(String name) {
-        this.name = name;
-    }
+import net.cyue.web.easyquery.core.util.TaskUtil;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.web.context.WebApplicationContext;
 
-    public String getName() {
-        return name;
-    }
-    public String getName(String id) {
-        return id + "@" + name;
-    }
-    public String getName(Object obj) {
-        return obj + "@" + name;
-    }
+public class SpringProviderTaskType {
+    public static final TaskUtil.TaskType<WebApplicationContext> SET_CONTEXT =
+        new TaskUtil.TaskType<>("task-provider-http-spring-set-context");
+    public static final TaskUtil.TaskType<BeanFactory> SET_BEAN_FACTORY =
+            new TaskUtil.TaskType<>("task-provider-http-spring-set-bean-factory");
 }

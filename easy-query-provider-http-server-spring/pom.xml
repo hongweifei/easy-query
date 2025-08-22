@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-provider-http-server-spring</artifactId>
-
     <name>EasyQuery HTTP-SpringServer Provider</name>
     <description>EasyQuery SpringServer Provider</description>
 

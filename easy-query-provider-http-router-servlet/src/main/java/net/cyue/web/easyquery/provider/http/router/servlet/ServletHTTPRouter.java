@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 
 public class ServletHTTPRouter extends AbstractHTTPRouter<ServletContext> {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     public ServletHTTPRouter(ServletContext context) {
         super(context);
@@ -33,7 +33,7 @@ public class ServletHTTPRouter extends AbstractHTTPRouter<ServletContext> {
 
     @Override
     public boolean addRoute(String path, IWebRequestHandler handler, HTTPRequestMethod[] methods) {
-        TaskUtil.addTask(HTTPProviderTaskType.ADD_ROUTE.getName(), (_arg) -> {
+        TaskUtil.addTask(HTTPProviderTaskType.ADD_ROUTE, (_context) -> {
             final String servletName = this.getNewServletName(path);
             final Servlet servlet = new CustomServlet(handler, methods);
 

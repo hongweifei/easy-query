@@ -8,7 +8,7 @@ import org.springframework.core.type.AnnotationMetadata;
 
 public class ConfigurationImportSelector implements ImportSelector {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {

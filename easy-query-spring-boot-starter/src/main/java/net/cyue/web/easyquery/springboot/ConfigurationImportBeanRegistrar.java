@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class ConfigurationImportBeanRegistrar implements ImportBeanDefinitionRegistrar {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     public void registerBeanDefinitions(
         AnnotationMetadata importingClassMetadata,

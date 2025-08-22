@@ -12,6 +12,7 @@ import net.cyue.web.easyquery.core.http.data.PathInfo;
 import net.cyue.web.easyquery.core.http.handler.api.IWebExceptionHandler;
 import net.cyue.web.easyquery.core.http.handler.api.IWebResponseHandler;
 import net.cyue.web.easyquery.core.http.handler.api.IWebResultHandler;
+import net.cyue.web.easyquery.core.util.TaskUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +38,11 @@ public class EasyQueryApplication<TContext> {
     private static final ConfigGroup CONFIG_GROUP_LOG = ConfigGroup.create(ConfigGroup.APPLICATION, "log");
 
     /// 主包名
-    private static final String MAIN_PACKAGE_NAME = "net.cyue.web.easyquery";
+    public static final String MAIN_PACKAGE_NAME = "net.cyue.web.easyquery";
 
     private boolean handlerInitialized = false;
     private final Map<ConfigItem, IConfigItemHandler> additionalConfigItemHandlerMap = new HashMap<>();
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
     private EasyQueryContext<TContext> context;
 
     /**
@@ -51,6 +52,7 @@ public class EasyQueryApplication<TContext> {
     {
         this.registerDefaultConfigItemHandlers();
         this.logConfigItemInfo();
+        TaskUtil.runTask(EasyQueryApplicationTaskType.INIT, this);
     }
 
     /**
@@ -62,6 +64,7 @@ public class EasyQueryApplication<TContext> {
         this.context = context;
         this.registerDefaultConfigItemHandlers();
         this.logConfigItemInfo();
+        TaskUtil.runTask(EasyQueryApplicationTaskType.INIT, this);
     }
 
     private void logConfigItemInfo() {
@@ -246,13 +249,19 @@ public class EasyQueryApplication<TContext> {
     }
 
     /**
+     * 获取原始服务上下文
+     * @return 原始服务上下文
+     */
+    public TContext getServerContext() {
+        return this.context.getServerContext();
+    }
+    /**
      * 获取 EasyQuery 上下文
      * @return EasyQueryContext
      */
     public EasyQueryContext<TContext> getContext() {
         return this.context;
     }
-
 
     /**
      * 运行 EasyQueryApplication By Properties

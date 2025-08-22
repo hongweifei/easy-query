@@ -96,7 +96,7 @@ public class HTTPRequestBody extends HashMap<String, Object> {
     /**
      * logger
      */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     /**
      * 构造函数

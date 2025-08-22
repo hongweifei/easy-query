@@ -21,12 +21,12 @@ public class SpringHTTPServer extends AbstractHTTPServer<ServletContext> {
 
     private static final String DISPATCHER_SERVLET_NAME = "dispatcherServlet";
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
     private boolean isInit = false;
 
     public SpringHTTPServer(ServletContext context) {
         super(context);
-        TaskUtil.addTask(HTTPProviderTaskType.INIT.getName(), (_arg) -> {
+        TaskUtil.addTask(HTTPProviderTaskType.INIT, (_context) -> {
             if (!SpringContextUtil.hasApplicationContext()) {
                 this.initSpringApplication();
             }

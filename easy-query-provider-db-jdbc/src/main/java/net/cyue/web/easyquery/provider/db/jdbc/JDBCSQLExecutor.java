@@ -1,59 +1,31 @@
 package net.cyue.web.easyquery.provider.db.jdbc;
 
-import net.cyue.util.ResourceUtil;
-import net.cyue.util.StringUtil;
 import net.cyue.web.easyquery.core.config.ConfigException;
 import net.cyue.web.easyquery.core.db.api.ISQLExecutor;
 import net.cyue.web.easyquery.core.util.SQLUtil;
+import net.cyue.web.easyquery.provider.db.DBConfiguration;
+import net.cyue.web.easyquery.provider.db.DBConfigurationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.*;
 
 public class JDBCSQLExecutor implements ISQLExecutor {
 
     private static final String JDBC_PROPERTIES = "jdbc.properties";
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
     private final Connection connection;
 
     public JDBCSQLExecutor() throws IOException, ConfigException {
-        Properties properties = new Properties();
-        try (InputStream inputStream = ResourceUtil.getResourceAsStream(JDBC_PROPERTIES)) {
-            if (inputStream == null) {
-                throw new ConfigException("jdbc.properties未找到");
-            }
-            properties.load(inputStream);
-        }
-
-        String url = properties.getProperty("url");
-        String username = properties.getProperty("username");
-        String password = properties.getProperty("password");
-
-        if (StringUtil.isBlank(username)) {
-            username = properties.getProperty("user");
-        }
-
-        if (url == null || username == null) {
-            this.logger.warn("jdbc.properties未正确配置。");
-        }
-        if (StringUtil.isBlank(url)) {
-            throw new ConfigException("url为空");
-        }
-        if (StringUtil.isBlank(username)) {
-            throw new ConfigException("username为空");
-        }
-        if (StringUtil.isBlank(password)) {
-            password = "";
-        }
+        DBConfiguration configuration = DBConfigurationUtil.loadProperties(JDBC_PROPERTIES);
 
         try {
             this.connection = DriverManager.getConnection(
-                url,
-                username,
-                password
+                configuration.getUrl(),
+                configuration.getUsername(),
+                configuration.getPassword()
             );
         } catch (SQLException e) {
             this.logger.warn("获取数据库连接失败，请检查数据库驱动是否注册");

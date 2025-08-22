@@ -29,7 +29,8 @@ import java.util.Map;
  * @param <TContext> 原始服务上下文
  */
 public class EasyQueryContext<TContext> {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
+    private TContext serverContext;
     private ISQLExecutor sqlExecutor;
     private IHTTPServer httpServer;
 
@@ -73,7 +74,11 @@ public class EasyQueryContext<TContext> {
     {
         this.contextPath = contextPath;
         this.sqlExecutor = InstanceProviderLoader.load(ISQLExecutor.class).getInstance();
-        this.initHTTPComponents(serverContext);
+        this.setServerContext(serverContext);
+    }
+
+    public TContext getServerContext() {
+        return this.serverContext;
     }
 
     /**
@@ -85,7 +90,8 @@ public class EasyQueryContext<TContext> {
     public void setServerContext(TContext serverContext)
         throws IOException, ConfigException
     {
-        this.initHTTPComponents(serverContext);
+        this.serverContext = serverContext;
+        this.initHTTPComponents();
     }
 
     /**
@@ -155,18 +161,23 @@ public class EasyQueryContext<TContext> {
     }
 
 
-    private void initHTTPComponents(TContext serverContext)
+    private void initHTTPComponents()
         throws IOException, ConfigException
     {
+        if (this.serverContext == null) {
+            this.logger.warn("Server Context is null");
+            return;
+        }
+
         IHTTPServer tempServer;
         IHTTPRouter tempRouter = null;
         // this.httpServer = (IHTTPServer<TContext>) ServiceProviderLoader.load(serverContext).getService();
         try {
-            tempServer = InstanceProviderLoader.load(IHTTPServer.class, serverContext).getInstance();
+            tempServer = InstanceProviderLoader.load(IHTTPServer.class, this.serverContext).getInstance();
         } catch (ConfigException e) {
             this.logger.warn(e.getMessage());
             IService<?> service;
-            service = ServiceProviderLoader.load(serverContext).getService();
+            service = ServiceProviderLoader.load(this.serverContext).getService();
             if (service instanceof IHTTPServer) {
                 tempServer = (IHTTPServer) service;
             } else {
@@ -174,11 +185,11 @@ public class EasyQueryContext<TContext> {
             }
         }
         try {
-            tempRouter = InstanceProviderLoader.load(IHTTPRouter.class, serverContext).getInstance();
+            tempRouter = InstanceProviderLoader.load(IHTTPRouter.class, this.serverContext).getInstance();
         } catch (ConfigException ce1) {
             this.logger.warn(ce1.getMessage());
             try {
-                IService<?> service = ServiceProviderLoader.load(serverContext).getService();
+                IService<?> service = ServiceProviderLoader.load(this.serverContext).getService();
                 if (service instanceof IHTTPRouter) {
                     tempRouter = (IHTTPRouter) service;
                 }

@@ -1,22 +1,11 @@
 package net.cyue.web.easyquery.provider.http;
 
-public enum HTTPProviderTaskType {
-    INIT("task-provider-http-init"),
-    ADD_ROUTE("task-provider-http-add-route"),
-    ;
-    private final String name;
+import jakarta.servlet.ServletContext;
+import net.cyue.web.easyquery.core.util.TaskUtil;
 
-    HTTPProviderTaskType(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public String getName(String id) {
-        return id + "@" + name;
-    }
-    public String getName(Object obj) {
-        return obj + "@" + name;
-    }
+public class HTTPProviderTaskType {
+    public static final TaskUtil.TaskType<ServletContext> INIT =
+        new TaskUtil.TaskType<>("task-provider-http-init");
+    public static final TaskUtil.TaskType<ServletContext> ADD_ROUTE =
+        new TaskUtil.TaskType<>("task-provider-http-add-route");
 }

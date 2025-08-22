@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-provider-db-jdbc</artifactId>
-
     <name>EasyQuery DB-JDBC Provider</name>
     <description>EasyQuery JDBC Provider</description>
 
@@ -24,6 +23,12 @@
         <dependency>
             <groupId>net.cyue.web.easyquery</groupId>
             <artifactId>easy-query-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.cyue.web.easyquery</groupId>
+            <artifactId>easy-query-provider-db-core</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

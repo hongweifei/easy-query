@@ -17,7 +17,7 @@ import java.io.IOException;
 @Component
 public class EasyQueryApplicationLauncher {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     @Autowired
     private EasyQueryApplication<ServletContext> app;

@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-spring-boot-starter</artifactId>
-
     <name>EasyQuery SpringBoot Starter</name>
     <description>EasyQuery SpringBoot Starter</description>
 

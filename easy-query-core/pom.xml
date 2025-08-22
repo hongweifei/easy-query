@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-core</artifactId>
-
     <name>EasyQuery Core</name>
     <description>The core of EasyQuery</description>
 

@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 @WebListener
 public class ContextListener implements ServletContextListener {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.toString());
 
     public void contextInitialized(ServletContextEvent sce) {
         this.logger.info("Servlet容器初始化完成");
         // 添加路由
-        TaskUtil.runTask(HTTPProviderTaskType.ADD_ROUTE.getName());
+        TaskUtil.runTask(HTTPProviderTaskType.ADD_ROUTE, sce.getServletContext());
     }
 
 }

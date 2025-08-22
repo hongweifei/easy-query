@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>easy-query-provider-db-mybatis</artifactId>
-
     <name>EasyQuery DB-Mybatis Provider</name>
     <description>EasyQuery Mybatis Provider</description>
 
@@ -25,6 +24,11 @@
             <artifactId>easy-query-core</artifactId>
             <version>0.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.cyue.web.easyquery</groupId>
+            <artifactId>easy-query-provider-db-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
